@@ -11,8 +11,10 @@ const paddleW = 150;
 let paddleX = 150;
 let ballX = 150;
 let ballY = 150;
-let ballDX = 2;
-let ballDY = 4
+let ballDX = Math.floor(Math.random() * -4 * -3 * -2) + 1;
+let ballDY = Math.floor(Math.random() * 2 * 3 * 4) + 1;
+
+
 
 function drawGameCanvas() {
     canvas = document.getElementById('gameBoard');
@@ -25,21 +27,28 @@ function drawGameCanvas() {
 }
 
 function draw() {
+
+
+
     context.clearRect(0, 0, boardX, boardY);
 
-    context.fillStyle = 'thistle';
+    // BackgroundTable 
+    context.fillStyle = '#ffc947';
     context.beginPath();
     context.rect(0, 0, boardX, boardY);
     context.closePath();
     context.fill();
 
-    context.fillStyle = 'tomato';
+    // Ball
+    context.fillStyle = '#0a1931';
     context.beginPath();
     context.arc(ballX, ballY, 15, 0, Math.PI * 2, true);
     context.closePath();
     context.fill();
 
-    context.fillStyle = 'navy';
+
+    // Paleta 
+    context.fillStyle = '#185adb';
     context.beginPath();
     context.rect(paddleX, paddleD, paddleW, paddleH);
     context.closePath();
@@ -60,25 +69,44 @@ function draw() {
             ballDY = -ballDY;
         } else {
             clearInterval(gameLoop);
-            alert('Game Over');
+            alertEndGame();
+
         }
+    }
+}
+
+function alertEndGame() {
+    const html = document.querySelector('html');
+    const boxAlert = document.createElement('div');
+    boxAlert.setAttribute('class', 'boxAlert');
+    html.appendChild(boxAlert);
+
+    const paragraph = document.createElement('p');
+    paragraph.textContent = 'Game Over';
+    boxAlert.appendChild(paragraph);
+
+    const buttonCloseAlert = document.createElement('button');
+    buttonCloseAlert.textContent = 'x';
+    boxAlert.appendChild(buttonCloseAlert);
+
+    buttonCloseAlert.onclick = function () {
+        boxAlert.parentNode.removeChild(boxAlert);
     }
 }
 
 function keyInput(e) {
     switch (e.keyCode) {
         case 37:
-        paddleX -= 20;
-        if (paddleX < 0) {
-            paddleX = 0;
-        }
+            paddleX -= 20;
+            if (paddleX < 0) {
+                paddleX = 0;
+            }
             break;
         case 39:
             paddleX += 20;
             if (paddleX > boardX - paddleW) {
                 paddleX = boardX - paddleW;
             }
-
             break;
     }
 }
